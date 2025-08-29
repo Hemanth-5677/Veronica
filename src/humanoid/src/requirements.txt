@@ -1,0 +1,10 @@
+cvzone
+mediapipe
+opencv-python
+ffprobe
+gtts
+SpeechRecognition
+pyttsx3
+pygame
+pywin
+pyaudio
