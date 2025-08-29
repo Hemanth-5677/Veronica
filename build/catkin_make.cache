@@ -1,0 +1,2 @@
+humanoid
+-DCATKIN_DEVEL_PREFIX=/home/ubuntu/Desktop/git_codes/Humanoid-VIT/devel -DCMAKE_INSTALL_PREFIX=/home/ubuntu/Desktop/git_codes/Humanoid-VIT/install -G Unix Makefiles
