@@ -1,0 +1,8 @@
+prefix=/home/ubuntu/Desktop/git_codes/Humanoid-VIT/install
+
+Name: humanoid
+Description: Description of humanoid
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lros_essentials_cpp
+Requires: roscpp rospy std_msgs message_runtime

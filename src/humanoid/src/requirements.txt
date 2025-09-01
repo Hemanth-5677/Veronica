@@ -1,4 +1,5 @@
 cvzone
+pipwin
 mediapipe
 opencv-python
 ffprobe
@@ -6,5 +7,8 @@ gtts
 SpeechRecognition
 pyttsx3
 pygame
-pywin
-pyaudio
+pywin32
+python3-pyaudio
+portaudio19-dev
+sounddevice
+pydub

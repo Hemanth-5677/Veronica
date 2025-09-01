@@ -62,7 +62,7 @@ from humanoid.msg import Coordinates
 from std_msgs.msg import String
 
 nodeName1 = 'message_publisher_2'
-topicName1= 'vocal'
+topicName1= 'message_publisher_2'
 
 
 rospy.init_node(nodeName1, anonymous=True)
@@ -143,14 +143,14 @@ def visualize_angles(angles, mp3_fo):
         time.sleep(0.15)  # Adjust delay for smoother visualization
 # Example usage:
 while True:
-    # x = input("Enter the TTS text here :") 
+    x = input("Enter the TTS text here :") 
     m = f'0,0,0'
     msg= String()
     msg.data=m
     publisher1.publish(msg)
-    speak("where is my award?")
-    speak("I am an ai powered chat bot system for medical receptionist job")
-    # tts_speak(x)
+    # speak("where is my award?")
+    # speak("I am an ai powered chat bot system for medical receptionist job")
+    speak(x)
 
 #while True:
 #    y=takecommand()
