@@ -24,7 +24,7 @@ x=0
 
 print(3)
 # Machine-Learning part of the code to implement simple regression 
-cap = cv2.VideoCapture("http://192.168.29.12:8080/video")
+cap = cv2.VideoCapture("http://192.168.137.116:8080/video")
 detector_hand = HandDetector(staticMode=False, maxHands=2, modelComplexity=1, detectionCon=0.5, minTrackCon=0.5)
 detector = PoseDetector(staticMode=False,
                         modelComplexity=1,
