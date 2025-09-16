@@ -45,7 +45,7 @@ gnome-terminal --title="api_serve" -- bash -c "
 source /opt/ros/noetic/setup.bash;
 source /home/ubuntu/Desktop/git_codes/Humanoid-VIT/devel/setup.bash;
 ls;
-cd veronica_agent;
+cd humanoid/src/veronica_agent/;
 ls -a;
 cat .env
 set -a; source .env; set +a;
