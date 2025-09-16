@@ -2,14 +2,15 @@
 #include <Wire.h>
 #include <std_msgs/String.h>
 #include <Adafruit_PWMServoDriver.h>
-
+String x = "";
+int jaw = 0;
 ros::NodeHandle nh;
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 #define SERVOMIN  140 // minimum pulse length count (out of 4096)
 #define SERVOMAX  520 // maximum pulse length count (out of 4096)
 void callbackFunction(const std_msgs::String &msg);
-void callbackFunction2(const std_msgs::String &msg);
+
 // Subscribers and Publishers
 std_msgs::String status_msg;
 ros::Publisher arduino_pub("arduino_data", &status_msg);
@@ -21,7 +22,7 @@ int switchval = 0;
 static uint32_t curr = millis();
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(57600);
   Serial.println("8 channel Servo test!");
   pinMode(analogInPin, INPUT);
   pwm.begin();
@@ -48,12 +49,12 @@ void setServoPulse(uint8_t n, double pulse) {
 
 void loop() {
   // Publish movement status message
-  char buf[64];
-  snprintf(buf, sizeof(buf), "Current trim: %d, Switch: %d , PLEASE NOTE EVERYTHING ELSE IS WORKING FINE ", trimval, switchval);
-  status_msg.data = buf;
-  arduino_pub.publish(&status_msg);
+  //char buf[100];
+  // snprintf(buf, sizeof(buf), "Current trim: %d, Switch: %d , PLEASE NOTE EVERYTHING ELSE IS WORKING FINE %d ", trimval, switchval, jaw);
+  // status_msg.data = buf;
+  // arduino_pub.publish(&status_msg);
   nh.spinOnce();
-  delay(100);  // Publish every 100 ms, adjust as needed
+  //delay(10);  // Publish every 100 ms, adjust as needed
 }
 
 void set_location(int x ,int y){
@@ -111,15 +112,23 @@ void set_location(int x ,int y){
 
 // Drive jaw servo on channel 6
 void set_jaw_location(int angle) {
-  int pulse = map(angle, 0, 60, 150, 350);
+  int pulse = map(angle, 0, 20, 200, 450);
   int trim = analogRead(A0);
   trim = map(trim, 320, 580, -20, 20);
   int adj = constrain(pulse + trim, 130, 370);
-  pwm.setPWM(6, 0, adj);
+  pwm.setPWM(6, 0, pulse);
+//    for (int pulse = 150; pulse <= 450; pulse++) {
+//    pwm.setPWM(6, 0, pulse);
+//    delay(20);  // Controls sweep speed (adjust as needed)
+//  }
 }
+
+
+
 
 void callbackFunction(const std_msgs::String &msg) {
   String str = String(msg.data);
+  x = str;
   int dat[5] = {0, 0, 0, 0, 0};
   int start = 0;
   int idx;
@@ -138,5 +147,6 @@ void callbackFunction(const std_msgs::String &msg) {
 
   // dat[0]=x, dat[1]=y, dat[2]=v2, dat[3]=v3, dat[4]=z
   set_location(dat[0], dat[1]);
-  set_jaw_location(dat[4]);
+  set_jaw_location(dat[2]);
+  jaw = dat[2];
 }

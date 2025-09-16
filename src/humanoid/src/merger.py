@@ -21,15 +21,20 @@ def main():
     rospy.init_node('merger_node', anonymous=True)
     rospy.Subscriber('message_publisher_1', String, cb1)
     rospy.Subscriber('message_publisher_2', String, cb2)
-    pub = rospy.Publisher('merged_data', String, queue_size=10)
+    pub = rospy.Publisher('merger_node', String, queue_size=50)
 
     rate = rospy.Rate(20)  # 20 Hz loop
-
+    i = 0
     while not rospy.is_shutdown():
         # Combine the two strings
         merged = f"{latest1},{latest2}"
+        
         msg = String(data=merged)
-        pub.publish(msg)
+        if(merged[-1] != "0"):
+            pub.publish(msg)
+            print(merged)
+            i+=1
+            print(i)
         rate.sleep()
 
 if __name__ == '__main__':

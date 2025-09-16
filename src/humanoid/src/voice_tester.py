@@ -67,7 +67,7 @@ topicName1= 'message_publisher_2'
 
 rospy.init_node(nodeName1, anonymous=True)
 publisher1 = rospy.Publisher(topicName1,String,queue_size=20)
-rate = rospy.Rate(1000)
+rate = rospy.Rate(20)
 x=0
 # Initialize pygame mixer once
 
@@ -136,7 +136,7 @@ def visualize_angles(angles, mp3_fo):
         if not pygame.mixer.music.get_busy():
             break  # Stop visualization if audio playback ends
         msg= String()
-        m = f'0,0,{int(angles[i])}'
+        m = f'{int(angles[i])},{int(angles[i])},{int(angles[i])}'
         msg.data=m
         print(m)
         publisher1.publish(msg)
@@ -149,7 +149,7 @@ while True:
     msg.data=m
     publisher1.publish(msg)
     # speak("where is my award?")
-    # speak("I am an ai powered chat bot system for medical receptionist job")
+    #speak("I am an ai powered chat bot system for medical receptionist job")
     speak(x)
 
 #while True:
