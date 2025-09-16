@@ -38,6 +38,11 @@ color_yellow "Command: rosrun humanoid tester_node.py"
 gnome-terminal --title="tester_node" -- bash -c "rosrun humanoid tester_node.py; exec bash"
 sleep 1
 
+color_green "✔ Launching: rqt graph node"
+color_yellow "Command: rosrun rqt_graph rqt_graph"
+gnome-terminal --title="rqt_node" -- bash -c "rosrun rqt_graph rqt_graph"
+sleep 1
+
 
 color_magenta "⏳ Running directory navigation and API server start..."
 printf '\033[33m%s\n%s\n%s\n%s\n%s\033[0m\n' "Commands:" "source ROS environment" "roscd humanoid" "cd .. && cd src/humanoid/src" "adk api_serve"
