@@ -110,21 +110,6 @@ void set_location(int x ,int y){
    Serial.println(trimval);
 }
 
-// Drive jaw servo on channel 6
-void set_jaw_location(int angle) {
-  int pulse = map(angle, 0, 20, 200, 450);
-  int trim = analogRead(A0);
-  trim = map(trim, 320, 580, -20, 20);
-  int adj = constrain(pulse + trim, 130, 370);
-  pwm.setPWM(6, 0, pulse);
-//    for (int pulse = 150; pulse <= 450; pulse++) {
-//    pwm.setPWM(6, 0, pulse);
-//    delay(20);  // Controls sweep speed (adjust as needed)
-//  }
-}
-
-
-
 
 void callbackFunction(const std_msgs::String &msg) {
   String str = String(msg.data);
@@ -147,6 +132,5 @@ void callbackFunction(const std_msgs::String &msg) {
 
   // dat[0]=x, dat[1]=y, dat[2]=v2, dat[3]=v3, dat[4]=z
   set_location(dat[0], dat[1]);
-  set_jaw_location(dat[2]);
   jaw = dat[2];
 }
