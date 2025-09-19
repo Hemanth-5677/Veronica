@@ -52,7 +52,7 @@ void setServoPulse(uint8_t n, double pulse) {
 void loop() {
   // Publish movement status message
   char buf[100];
-  snprintf(buf, sizeof(buf), "[INFO]:: Value of (x,y) : %d,%d", trimval, switchval, jaw);
+  snprintf(buf, sizeof(buf), "[INFO]:: Value of (x,y) : %d,%d", x, y);
   status_msg.data = buf;
   arduino_pub.publish(&status_msg);
   nh.spinOnce();
