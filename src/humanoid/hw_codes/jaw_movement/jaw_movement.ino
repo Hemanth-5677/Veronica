@@ -62,7 +62,7 @@ void loop() {
 
 // Drive jaw servo on channel 6
 void set_jaw_location(int angle) {
-  int pulse = map(angle, 0, 20, 200, 450);
+  int pulse = map(angle, 0, 15, 200, 580);
   int trim = analogRead(A0);
   trim = map(trim, 320, 580, -20, 20);
   int adj = constrain(pulse + trim, 130, 370);

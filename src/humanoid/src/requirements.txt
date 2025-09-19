@@ -7,9 +7,6 @@ gtts
 SpeechRecognition
 pyttsx3
 pygame
-pywin32
-python3-pyaudio
-portaudio19-dev
 sounddevice
 pydub
 google-adk
