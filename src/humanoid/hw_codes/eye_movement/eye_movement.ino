@@ -13,9 +13,11 @@ void callbackFunction(const std_msgs::String &msg);
 
 // Subscribers and Publishers
 std_msgs::String status_msg;
-ros::Publisher arduino_pub("arduino_data", &status_msg);
-ros::Subscriber<std_msgs::String> merged("merger_node", &callbackFunction);
+ros::Publisher arduino_pub("vision_serial", &status_msg);
+ros::Subscriber<std_msgs::String> vision("vision_node", &callbackFunction);
 // Hardware pins and variables
+int x =0;
+int y =0;
 const int analogInPin = A0;
 int trimval;
 int switchval = 0;
@@ -30,7 +32,7 @@ void setup() {
   delay(10);
   
   nh.initNode();
-  nh.subscribe(merged);
+  nh.subscribe(vision);
   nh.advertise(arduino_pub);
 }
 
@@ -49,10 +51,10 @@ void setServoPulse(uint8_t n, double pulse) {
 
 void loop() {
   // Publish movement status message
-  //char buf[100];
-  // snprintf(buf, sizeof(buf), "Current trim: %d, Switch: %d , PLEASE NOTE EVERYTHING ELSE IS WORKING FINE %d ", trimval, switchval, jaw);
-  // status_msg.data = buf;
-  // arduino_pub.publish(&status_msg);
+  char buf[100];
+  snprintf(buf, sizeof(buf), "[INFO]:: Value of (x,y) : %d,%d", trimval, switchval, jaw);
+  status_msg.data = buf;
+  arduino_pub.publish(&status_msg);
   nh.spinOnce();
   //delay(10);  // Publish every 100 ms, adjust as needed
 }
@@ -114,10 +116,10 @@ void set_location(int x ,int y){
 void callbackFunction(const std_msgs::String &msg) {
   String str = String(msg.data);
   x = str;
-  int dat[5] = {0, 0, 0, 0, 0};
+  int dat[2] = {0, 0};
   int start = 0;
   int idx;
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < 2; i++) {
     // Find comma or end of string
     idx = str.indexOf(',', start);
     if (idx == -1 || i == 4) {
@@ -132,5 +134,6 @@ void callbackFunction(const std_msgs::String &msg) {
 
   // dat[0]=x, dat[1]=y, dat[2]=v2, dat[3]=v3, dat[4]=z
   set_location(dat[0], dat[1]);
-  jaw = dat[2];
+  x=dat[0];
+  y=dat[1];
 }

@@ -13,8 +13,8 @@ void callbackFunction(const std_msgs::String &msg);
 
 // Subscribers and Publishers
 std_msgs::String status_msg;
-ros::Publisher arduino_pub("arduino_data", &status_msg);
-ros::Subscriber<std_msgs::String> merged("merger_node", &callbackFunction);
+ros::Publisher arduino_pub("voice_serial", &status_msg);
+ros::Subscriber<std_msgs::String> voice("voice_node", &callbackFunction);
 // Hardware pins and variables
 const int analogInPin = A0;
 int trimval;
@@ -30,7 +30,7 @@ void setup() {
   delay(10);
   
   nh.initNode();
-  nh.subscribe(merged);
+  nh.subscribe(voice);
   nh.advertise(arduino_pub);
   pwm.setPWM(0, 0, 200);
   pwm.setPWM(1, 0, 200);
@@ -53,7 +53,7 @@ void setServoPulse(uint8_t n, double pulse) {
 void loop() {
   // Publish movement status message
   char buf[15];
-  snprintf(buf, sizeof(buf), "[jawAngle]:%d ", jaw);
+  snprintf(buf, sizeof(buf), "[INFO]:: jaw angle set to : %d ", jaw);
   status_msg.data = buf;
   arduino_pub.publish(&status_msg);
   nh.spinOnce();
@@ -76,10 +76,10 @@ void set_jaw_location(int angle) {
 void callbackFunction(const std_msgs::String &msg) {
   String str = String(msg.data);
   x = str;
-  int dat[5] = {0, 0, 0, 0, 0};
+  int dat[3] = {0, 0, 0};
   int start = 0;
   int idx;
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < 3; i++) {
     // Find comma or end of string
     idx = str.indexOf(',', start);
     if (idx == -1 || i == 4) {
