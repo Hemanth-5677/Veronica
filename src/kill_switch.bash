@@ -42,6 +42,8 @@ kill_term "api_serve"
 sleep 1
 kill_term "voice_serial"
 sleep 1
+kill_term "vision_serial"
+sleep 1
 kill_term "rqt_node"
 sleep 1
 

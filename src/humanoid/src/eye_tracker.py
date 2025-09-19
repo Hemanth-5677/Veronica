@@ -18,8 +18,8 @@ topicName1= 'vision_node'
 
 print(2)
 rospy.init_node(nodeName1, anonymous=True)
-publisher1 = rospy.Publisher(topicName1,String,queue_size=20)
-rate = rospy.Rate(10)
+publisher1 = rospy.Publisher(topicName1,String,queue_size=1)
+rate = rospy.Rate(30)
 x=0
 
 print(3)

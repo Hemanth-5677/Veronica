@@ -72,7 +72,7 @@ def main():
     global latest1, latest2
 
     rospy.init_node('adk_server', anonymous=True)
-    pub = rospy.Publisher('adk_server', String, queue_size=5)
+    pub = rospy.Publisher('adk_server', String, queue_size=1)
 
     rate = rospy.Rate(200)  # 20 Hz loop
     i = 0

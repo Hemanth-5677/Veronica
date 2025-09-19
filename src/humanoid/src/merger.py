@@ -21,7 +21,7 @@ def main():
     rospy.init_node('merger_node', anonymous=True)
     rospy.Subscriber('vision_node', String, cb1)
     rospy.Subscriber('voice_node', String, cb2)
-    pub = rospy.Publisher('merger_node', String, queue_size=50)
+    pub = rospy.Publisher('merger_node', String, queue_size=1)
 
     rate = rospy.Rate(20)  # 20 Hz loop
     i = 0
