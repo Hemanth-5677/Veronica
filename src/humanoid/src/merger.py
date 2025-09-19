@@ -19,8 +19,8 @@ def main():
     global latest1, latest2
 
     rospy.init_node('merger_node', anonymous=True)
-    rospy.Subscriber('message_publisher_1', String, cb1)
-    rospy.Subscriber('message_publisher_2', String, cb2)
+    rospy.Subscriber('vision_node', String, cb1)
+    rospy.Subscriber('voice_node', String, cb2)
     pub = rospy.Publisher('merger_node', String, queue_size=50)
 
     rate = rospy.Rate(20)  # 20 Hz loop
@@ -30,7 +30,7 @@ def main():
         merged = f"{latest1},{latest2}"
         
         msg = String(data=merged)
-        if(merged[-1] != "0"):
+        if(merged != "0,0,0,0,0"):
             pub.publish(msg)
             print(merged)
             i+=1

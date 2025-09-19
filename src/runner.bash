@@ -38,10 +38,6 @@ color_yellow "Command: rosrun humanoid tester_node.py"
 gnome-terminal --title="tester_node" -- bash -c "rosrun humanoid tester_node.py; exec bash"
 sleep 1
 
-color_green "✔ Launching: rqt graph node"
-color_yellow "Command: rosrun rqt_graph rqt_graph"
-gnome-terminal --title="rqt_node" -- bash -c "rosrun rqt_graph rqt_graph"
-sleep 1
 
 
 color_magenta "⏳ Running directory navigation and API server start..."
@@ -58,8 +54,23 @@ cd ..
 adk api_server;
 exec bash
 "
+sleep 15
+
+color_green "✔ Launching: user to agent input node"
+color_yellow "Command: rosrun humanoid adk_node.py"
+gnome-terminal --title="chat_node" -- bash -c "rosrun humanoid adk_node.py"
 sleep 1
 
+color_green "✔ Launching: serial node for jaw and voice"
+color_yellow "Command: rosrun rosserial_python serial_node.py /dev/ttyUSB0"
+gnome-terminal --title="voice_serial" -- bash -c "rosrun rosserial_python serial_node.py /dev/ttyUSB0"
+sleep 1
+
+color_green "✔ Launching: rqt graph node"
+color_yellow "Command: rosrun rqt_graph rqt_graph"
+gnome-terminal --title="rqt_node" -- bash -c "rosrun rqt_graph rqt_graph"
+sleep 1
 
 color_cyan "✅ All terminals launched successfully! Monitor each process in its window."
 sleep 1
+

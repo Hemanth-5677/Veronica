@@ -13,8 +13,8 @@ from humanoid.msg import Coordinates
 from std_msgs.msg import String
 
 print(1)
-nodeName1 = 'message_publisher_1'
-topicName1= 'message_publisher_1'
+nodeName1 = 'vision_node'
+topicName1= 'vision_node'
 
 print(2)
 rospy.init_node(nodeName1, anonymous=True)
