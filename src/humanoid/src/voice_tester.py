@@ -67,7 +67,7 @@ topicName1= 'voice_node'
 latest1=""
 
 rospy.init_node(nodeName1, anonymous=True)
-publisher1 = rospy.Publisher(topicName1,String,queue_size=20)
+publisher1 = rospy.Publisher(topicName1,String,queue_size=1)
 rate = rospy.Rate(20)
 x=0
 # Initialize pygame mixer once

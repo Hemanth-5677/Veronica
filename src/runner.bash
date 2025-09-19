@@ -18,6 +18,22 @@ color_yellow "Command: roscore"
 gnome-terminal --title="roscore" -- bash -c "roscore; exec bash"
 sleep 1
 
+color_green "✔ Launching: serial node for eye"
+color_yellow "Command: rosrun rosserial_python serial_node.py _port:=/dev/ttyUSB0 _baud:=57600 __name:=usb0_node "
+gnome-terminal --title="vision_serial" -- bash -c "rosrun rosserial_python serial_node.py _port:=/dev/ttyUSB0 _baud:=57600 __name:=usb0_node "
+sleep 1
+
+color_green "✔ Launching: serial node for jaw and voice"
+color_yellow "Command: rosrun rosserial_python serial_node.py _port:=/dev/ttyUSB1 _baud:=57600 __name:=usb1_node "
+gnome-terminal --title="voice_serial" -- bash -c "rosrun rosserial_python serial_node.py _port:=/dev/ttyUSB1 _baud:=57600 __name:=usb1_node "
+sleep 1
+
+color_green "✔ Launching: tester_node.py node"
+color_yellow "Command: rosrun humanoid tester_node.py"
+gnome-terminal --title="tester_node" -- bash -c "rosrun humanoid tester_node.py; exec bash"
+sleep 1
+
+
 color_green "✔ Launching: voice_tester.py node"
 color_yellow "Command: rosrun humanoid voice_tester.py"
 gnome-terminal --title="voice_tester" -- bash -c "rosrun humanoid voice_tester.py; exec bash"
@@ -33,10 +49,6 @@ color_yellow "Command: rosrun humanoid merger.py"
 gnome-terminal --title="merger" -- bash -c "rosrun humanoid merger.py; exec bash"
 sleep 1
 
-color_green "✔ Launching: tester_node.py node"
-color_yellow "Command: rosrun humanoid tester_node.py"
-gnome-terminal --title="tester_node" -- bash -c "rosrun humanoid tester_node.py; exec bash"
-sleep 1
 
 
 
@@ -54,17 +66,14 @@ cd ..
 adk api_server;
 exec bash
 "
-sleep 15
+sleep 30
 
 color_green "✔ Launching: user to agent input node"
 color_yellow "Command: rosrun humanoid adk_node.py"
 gnome-terminal --title="chat_node" -- bash -c "rosrun humanoid adk_node.py"
 sleep 1
 
-color_green "✔ Launching: serial node for jaw and voice"
-color_yellow "Command: rosrun rosserial_python serial_node.py /dev/ttyUSB0"
-gnome-terminal --title="voice_serial" -- bash -c "rosrun rosserial_python serial_node.py /dev/ttyUSB0"
-sleep 1
+
 
 color_green "✔ Launching: rqt graph node"
 color_yellow "Command: rosrun rqt_graph rqt_graph"

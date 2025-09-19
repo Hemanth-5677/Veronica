@@ -2,7 +2,7 @@
 #include <Wire.h>
 #include <std_msgs/String.h>
 #include <Adafruit_PWMServoDriver.h>
-String x = "";
+
 int jaw = 0;
 ros::NodeHandle nh;
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
@@ -51,8 +51,8 @@ void setServoPulse(uint8_t n, double pulse) {
 
 void loop() {
   // Publish movement status message
-  char buf[100];
-  snprintf(buf, sizeof(buf), "[INFO]:: Value of (x,y) : %d,%d", x, y);
+  char buf[10];
+  snprintf(buf, sizeof(buf), "%d,%d", x, y);
   status_msg.data = buf;
   arduino_pub.publish(&status_msg);
   nh.spinOnce();
@@ -115,14 +115,14 @@ void set_location(int x ,int y){
 
 void callbackFunction(const std_msgs::String &msg) {
   String str = String(msg.data);
-  x = str;
+  
   int dat[2] = {0, 0};
   int start = 0;
   int idx;
   for (int i = 0; i < 2; i++) {
     // Find comma or end of string
     idx = str.indexOf(',', start);
-    if (idx == -1 || i == 4) {
+    if (idx == -1 || i == 1) {
       // Last field: go to end of string
       dat[i] = str.substring(start).toInt();
       break;
@@ -134,6 +134,6 @@ void callbackFunction(const std_msgs::String &msg) {
 
   // dat[0]=x, dat[1]=y, dat[2]=v2, dat[3]=v3, dat[4]=z
   set_location(dat[0], dat[1]);
-  x=dat[0];
-  y=dat[1];
+  x = dat[0];
+  y = dat[1];
 }

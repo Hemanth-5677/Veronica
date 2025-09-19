@@ -6,7 +6,6 @@ String x = "";
 int jaw = 0;
 ros::NodeHandle nh;
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-
 #define SERVOMIN  140 // minimum pulse length count (out of 4096)
 #define SERVOMAX  520 // maximum pulse length count (out of 4096)
 void callbackFunction(const std_msgs::String &msg);
@@ -53,7 +52,7 @@ void setServoPulse(uint8_t n, double pulse) {
 void loop() {
   // Publish movement status message
   char buf[15];
-  snprintf(buf, sizeof(buf), "[INFO]:: jaw angle set to : %d ", jaw);
+  snprintf(buf, sizeof(buf), "%d ", jaw);
   status_msg.data = buf;
   arduino_pub.publish(&status_msg);
   nh.spinOnce();
