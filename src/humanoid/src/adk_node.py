@@ -4,6 +4,17 @@ import requests
 import rospy
 from std_msgs.msg import String
 
+#create session variable 
+url = "http://localhost:8000/apps/veronica_agent/users/forusone/sessions/session_10"
+payload = {}
+
+headers = {
+    'Content-Type': 'application/json'
+}
+
+response = requests.post(url, json=payload, headers=headers)
+response.raise_for_status()  # raise exception if HTTP error
+
 def find_key_in_dict(d, key):
     """
     Recursively search for a key in nested dictionaries or lists and return its value.
