@@ -13,7 +13,7 @@ headers = {
 }
 
 response = requests.post(url, json=payload, headers=headers)
-response.raise_for_status()  # raise exception if HTTP error
+# response.raise_for_status()  # raise exception if HTTP error
 
 def find_key_in_dict(d, key):
     """
