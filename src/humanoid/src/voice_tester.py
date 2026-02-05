@@ -259,7 +259,7 @@ def main():
 #     #speak("I am an ai powered chat bot system for medical receptionist job")
 #     speak(x)
 
-#while True:
+# while True:
 #    y=takecommand()
 #    print(y)
 #    speak(y)
