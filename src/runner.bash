@@ -24,8 +24,8 @@ gnome-terminal --title="vision_serial" -- bash -c "rosrun rosserial_python seria
 sleep 1
 
 color_green "✔ Launching: serial node for jaw and voice"
-color_yellow "Command: rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=57600 __name:=usb0_node "
-gnome-terminal --title="voice_serial" -- bash -c "rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=57600 __name:=usb1_node "
+color_yellow "Command: rosrun rosserial_python serial_node.py _port:=/dev/ttyUSB1 _baud:=57600 __name:=usb0_node "
+gnome-terminal --title="voice_serial" -- bash -c "rosrun rosserial_python serial_node.py _port:=/dev/ttyUSB1 _baud:=57600 __name:=usb1_node "
 sleep 1
 
 color_green "✔ Launching: tester_node.py node"

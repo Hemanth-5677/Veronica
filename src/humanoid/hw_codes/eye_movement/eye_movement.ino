@@ -14,7 +14,7 @@ void callbackFunction(const std_msgs::String &msg);
 // Subscribers and Publishers
 std_msgs::String status_msg;
 ros::Publisher arduino_pub("vision_serial", &status_msg);
-ros::Subscriber<std_msgs::String> vision("vision_node", &callbackFunction);
+ros::Subscriber<std_msgs::String> vision("merger_node", &callbackFunction);
 // Hardware pins and variables
 int x =0;
 int y =0;
