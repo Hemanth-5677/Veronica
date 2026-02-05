@@ -54,11 +54,11 @@ from gtts import gTTS
 from io import BytesIO
 import pygame
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from pydub import AudioSegment
 import time
 import rospy 
-from humanoid.msg import Coordinates
+# from humanoid.msg import Coordinates
 from std_msgs.msg import String
 
 nodeName1 = 'voice_node'
