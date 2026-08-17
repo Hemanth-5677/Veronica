@@ -2,94 +2,108 @@
 #include <Wire.h>
 #include <std_msgs/String.h>
 #include <Adafruit_PWMServoDriver.h>
-String x = "";
-int jaw = 0;
-ros::NodeHandle nh;
-Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-#define SERVOMIN  140 // minimum pulse length count (out of 4096)
-#define SERVOMAX  520 // maximum pulse length count (out of 4096)
-void callbackFunction(const std_msgs::String &msg);
 
-// Subscribers and Publishers
+// ================= ROS =================
+ros::NodeHandle nh;
 std_msgs::String status_msg;
 ros::Publisher arduino_pub("voice_serial", &status_msg);
+void callbackFunction(const std_msgs::String &msg);
 ros::Subscriber<std_msgs::String> voice("voice_node", &callbackFunction);
-// Hardware pins and variables
-const int analogInPin = A0;
-int trimval;
-int switchval = 0;
-static uint32_t curr = millis();
 
+// ================= PCA9685 =================
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
+// ================= JAW CONFIG =================
+int jaw = 0;
+
+// 👇 calibrated values (from your test)
+int jawClosed = 345;
+int jawOpen   = 450;
+
+// mirrored servo offsets (keep 0 unless needed)
+int servo0Offset = 0;
+int servo1Offset = 0;
+
+// safety limits
+#define SERVO_MIN 130
+#define SERVO_MAX 580
+
+// ================= STARTUP CLEAN =================
+void disableServos() {
+  pwm.setPWM(0, 0, 0);
+  pwm.setPWM(1, 0, 0);
+}
+
+// ================= JAW CONTROL =================
+// CH0 = mirrored
+// CH1 = normal
+void setJawPulse(int pulse) {
+
+  pulse = constrain(pulse, jawClosed, jawOpen);
+
+  int pulse1 = pulse + servo1Offset;
+  int pulse0 = jawClosed + (jawOpen - pulse) + servo0Offset;
+
+  pulse0 = constrain(pulse0, SERVO_MIN, SERVO_MAX);
+  pulse1 = constrain(pulse1, SERVO_MIN, SERVO_MAX);
+
+  pwm.setPWM(0, 0, pulse0);
+  pwm.setPWM(1, 0, pulse1);
+}
+
+// ================= SETUP =================
 void setup() {
   Serial.begin(57600);
-  Serial.println("8 channel Servo test!");
-  pinMode(analogInPin, INPUT);
+  Serial.println("ROS Jaw Controller Started");
+
   pwm.begin();
-  pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
-  delay(10);
-  
+  pwm.setPWMFreq(60);
+  delay(50);
+
+  disableServos();
+  delay(100);
+
+  // start closed
+  setJawPulse(jawClosed);
+
   nh.initNode();
   nh.subscribe(voice);
   nh.advertise(arduino_pub);
-  pwm.setPWM(0, 0, 200);
-  pwm.setPWM(1, 0, 200);
-  delay(100);
 }
 
-// Optional helper function to set servo pulse length (not used in this example)
-void setServoPulse(uint8_t n, double pulse) {
-  double pulselength;
-  pulselength = 1000000;   // 1,000,000 us per second
-  pulselength /= 60;       // 60 Hz
-  Serial.print(pulselength); Serial.println(" us per period"); 
-  pulselength /= 4096;     // 12 bits of resolution
-  Serial.print(pulselength); Serial.println(" us per bit"); 
-  pulse *= 1000000;        // convert to us
-  pulse /= pulselength;
-  Serial.println(pulse);
-}
-
+// ================= LOOP =================
 void loop() {
-  // Publish movement status message
-  char buf[15];
-  snprintf(buf, sizeof(buf), "%d ", jaw);
+  char buf[10];
+  snprintf(buf, sizeof(buf), "%d", jaw);
   status_msg.data = buf;
   arduino_pub.publish(&status_msg);
+
   nh.spinOnce();
-  //delay(10);  // Publish every 100 ms, adjust as needed
 }
 
-// Drive jaw servo on channel 6
-void set_jaw_location(int angle) {
-  int pulse = map(angle, 0, 15, 200, 580);
-  int trim = analogRead(A0);
-  trim = map(trim, 320, 580, -20, 20);
-  int adj = constrain(pulse + trim, 130, 370);
-  pwm.setPWM(0, 0, pulse);
-  pwm.setPWM(1, 0, pulse);
-}
-
-
-
-
+// ================= ROS CALLBACK =================
 void callbackFunction(const std_msgs::String &msg) {
+
   String str = String(msg.data);
-  x = str;
+
+  // expecting: v1,v2,jaw
   int dat[3] = {0, 0, 0};
   int start = 0;
   int idx;
+
   for (int i = 0; i < 3; i++) {
-    // Find comma or end of string
     idx = str.indexOf(',', start);
-    if (idx == -1 || i == 4) {
-      // Last field: go to end of string
+    if (idx == -1 || i == 2) {
       dat[i] = str.substring(start).toInt();
       break;
     }
-    // Extract substring between start and idx
     dat[i] = str.substring(start, idx).toInt();
     start = idx + 1;
   }
-  set_jaw_location(dat[2]);
+
+  // map jaw command (0–15 → pulse range)
+  int pulse = map(dat[2], 0, 15, jawClosed, jawOpen);
+  setJawPulse(pulse);
+
   jaw = dat[2];
 }

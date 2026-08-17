@@ -6,9 +6,9 @@ import rospy
 from std_msgs.msg import String
 
 # ---------------- CONFIG ----------------
-use_test_image = True           # 🔴 set False to use camera
+use_test_image = False   # 🔴 set False to use camera
 test_image_path = "/home/ubuntu/Downloads/h.jpeg"    # 🔴 path to test image
-camera_url = "http://172.20.10.6:8080/video"
+camera_url = "http://10.201.102.32:8080/video"
 # ----------------------------------------
 
 print(1)
@@ -58,7 +58,12 @@ def get_frame(cap):
 
 cap = None
 if not use_test_image:
-    cap = cv2.VideoCapture(camera_url)
+    cap = cv2.VideoCapture("10.201.102.32:8080/video")
+    # cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
+    # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    # cap.set(cv2.CAP_PROP_FPS, 30)
+
 
 print(4)
 

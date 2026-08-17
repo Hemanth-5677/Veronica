@@ -6,6 +6,9 @@ from std_msgs.msg import String
 import speech_recognition as sr
 import warnings
 warnings.filterwarnings("ignore")
+import os
+os.environ["ALSA_LOG_LEVEL"] = "0"
+
 
 #create session variable 
 url = "http://localhost:8000/apps/veronica_agent/users/forusone/sessions/session_10"
@@ -145,8 +148,8 @@ def main():
     i = 0
     while not rospy.is_shutdown():
         # Combine the two strings
-        # querry = input("\033[33m[user]::\033[00m")
-        querry = takecommand()
+        querry = input("\033[33m[user]::\033[00m")
+        # querry = takecommand()
         if not querry:
             continue
 

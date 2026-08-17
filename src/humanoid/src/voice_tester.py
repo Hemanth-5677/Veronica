@@ -220,8 +220,9 @@ def audio_parser(audio_buffer):
         samples = samples[::2]
     samples = samples * (samples > 0)  # Positive values only
     normalized_samples = samples / np.max(np.abs(samples))
-    smoothed_signal = kernel_average(normalized_samples, kernel_size=5000)
-    angles = np.interp(smoothed_signal, [0, 0.3], [0, 40])
+    smoothed_signal = kernel_average(normalized_samples, kernel_size=1000)
+    smoothed_signal = smoothed_signal * 2.5
+    angles = np.interp(smoothed_signal, [0, 0.15], [0, 80])
     return angles
 
 
